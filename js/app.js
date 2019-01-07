@@ -168,10 +168,6 @@ const beer = {
 			}
 		}
 	},
-	
-	// getY () {
-	// 	this.y = game.bars[bartender.currentBar].y - 25;
-	// }
 }
 
 const patron = {
@@ -216,17 +212,25 @@ const patron = {
 		}
 	},
 	checkServed () {
+		for (let i = 0; i < beer.beers.length; i++) {
+			this.patrons.forEach((patron) => {
+				if (patron.currentBar === beer.beers[i].currentBar &&
+					patron.x + patron.width > beer.beers[i].x) {
+					console.log('hit!');
+				}
+			})
+		}
+		// if (beer.beers != [] &&
+		// 	beer.beers.currentBar === patron.patrons.currentBar) {
+		// 	console.log('same bar!');
+		// }	
 		// for (let i = 0; i < beer.beers.length; i++) {
-		// 	this.patrons.forEach((patron) => {
-		// 		if (patron.x + patron.width > beer.beers[i].x) {
-		// 			console.log('hit!');
+		// 	this.patrons.forEach(() {
+		// 		if (patrons.x + patrons.width > beer.beers[i].x) {
+		// 			console.log('true');
 		// 		}
-		// 	})
+		// 	});
 		// }
-		if (beer.beers != [] &&
-			beer.beers.currentBar === patron.patrons.currentBar) {
-			console.log('same bar!');
-		}	
 	},
 }
 
@@ -237,7 +241,7 @@ bartender.makeBartender();
 
 // animation loop
 function animate () {
-	// patron.checkServed();
+	patron.checkServed();
 	game.updateHUD();
 	patron.walk();
 	beer.slide();
