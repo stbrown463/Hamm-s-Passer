@@ -106,6 +106,7 @@ const bartender = {
 			this.setY()
 			game.drawBoard();
 			this.draw();
+			beer.draw();
 		}
 		if (dir === "s" && this.currentBar != game.numBars - 1) {
 			game.eraseBoard();
@@ -115,6 +116,7 @@ const bartender = {
 			this.draw()
 			game.drawBoard()
 			this.draw();
+			beer.draw();
 			
 		}
 		// this.bartenderArray[0].draw();
@@ -122,9 +124,9 @@ const bartender = {
 	run (dir) {
 		console.log("I'm running");
 	},
-	pourBeer () {
-		console.log("I'm pouring beer");
-	}
+	// pourBeer () {
+	// 	console.log("I'm pouring beer");
+	// }
 }
 
 const beer = {
@@ -138,8 +140,17 @@ const beer = {
 	makeBeer () {
 		this.y = bartender.getY();
 		const beer = new Rectangle (this.x, this.y, this.width, this.height, this.color)	
-		beer.draw();
+		// beer.draw();
 		this.beers.push(beer);
+		this.draw();
+	},
+	draw () {
+		for (let i = 0; i < this.beers.length; i++) {
+			this.beers[i].draw();
+		}
+	},
+	slide () {
+
 	}
 	// getY () {
 	// 	this.y = game.bars[bartender.currentBar].y - 25;
@@ -150,7 +161,14 @@ const beer = {
 // bartender.getY();
 bartender.makeBartender();
 
+// animation loop
+let x = 0;
+function animate () {
 
+
+
+	window.requestAnimationFrame(animate);
+}
 
 
 //	Event Listeners
@@ -166,7 +184,7 @@ document.addEventListener('keydown', (e) => {
 		bartender.run(e.key)
 	}
 	if ("Space" === e.code) {
-		bartender.pourBeer();
+		// bartender.pourBeer();
 		beer.makeBeer()
 	}
 })
