@@ -8,12 +8,12 @@ const ctx = canvas.getContext('2d');
 
 
 // make one bar
-function makeBar (x, y, width, height, color) {
-	ctx.beginPath();
-	ctx.rect(x, y, width, height);
-	ctx.fillStyle = color;
-	ctx.fill();
-}
+// function makeBar (x, y, width, height, color) {
+// 	ctx.beginPath();
+// 	ctx.rect(x, y, width, height);
+// 	ctx.fillStyle = color;
+// 	ctx.fill();
+// }
 
 // makeBar(0, 100, 600, 50, 'brown');
 
@@ -33,21 +33,14 @@ class Rectangle {
 	}
 }
 
-
-
-// class Patron {
-// 	constructor() {
-
-// 	}
-// }
-
 const game = {
+	lives: 3,
 	numBars: 3,
 	bars: [],
 	taps: [],
 	makeBars () {
 		for (let i = 0; i < this.numBars; i++) {
-			const bar = new Rectangle (0, 100 + (i * (700 / this.numBars)), 650, 50, 'brown')
+			const bar = new Rectangle (0, 100 + (i * (700 / this.numBars)), 700, 50, 'brown')
 			bar.draw()
 			this.bars.push(bar);
 		}
@@ -74,6 +67,10 @@ const game = {
 		bartender.draw();
 		patron.draw();
 		beer.draw();
+	},
+	updateHUD () {
+		const lives = document.querySelector('#lives');
+		lives.innerHTML = `Player Lives<br>${game.lives}`
 	}
 
 }
@@ -138,7 +135,7 @@ const bartender = {
 }
 
 const beer = {
-	x: 640,
+	x: 690,
 	y: null,
 	currentBar: 0,
 	width: 10,
@@ -146,11 +143,17 @@ const beer = {
 	color: 'blue',
 	beers: [],
 	makeBeer () {
-		this.y = bartender.getY();
+		this.y = this.getY();
 		const beer = new Rectangle (this.x, this.y, this.width, this.height, this.color)	
 		// beer.draw();
+		beer.currentBar = this.currentBar
 		this.beers.push(beer);
 		this.draw();
+	},
+	getY () {
+		this.y = game.bars[bartender.currentBar].y - 25;
+		this.currentBar = bartender.currentBar;
+		return this.y
 	},
 	draw () {
 		for (let i = 0; i < this.beers.length; i++) {
@@ -165,6 +168,7 @@ const beer = {
 			}
 		}
 	},
+	
 	// getY () {
 	// 	this.y = game.bars[bartender.currentBar].y - 25;
 	// }
@@ -182,13 +186,14 @@ const patron = {
 		this.currentBar();
 		const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color)	
 		// beer.draw();
+		patron.currentBar = this.currentBar
 		this.patrons.push(patron);
 		this.draw();
 	},
 	currentBar () {
 		// random bar height
-		let idx = Math.floor(Math.random() * 3);
-		this.y = game.bars[idx].y - 25;
+		this.currentBar = Math.floor(Math.random() * 3);
+		this.y = game.bars[this.currentBar].y - 25;
 	},
 	draw () {
 		for (let i = 0; i < this.patrons.length; i++) {
@@ -200,9 +205,29 @@ const patron = {
 			this.patrons[i].x += 1;
 			if (this.patrons[i].x > bartender.x - bartender.width) {
 				this.patrons.splice(i, 1);
+				game.lives--;
 			}
+			// if patron is at the same bar as beer glass
+	
+			
+			// if (this.patron[i].y + this.patron[i].width > beer.beers.forEach().x) {
+
+			// }
 		}
-	}
+	},
+	checkServed () {
+		// for (let i = 0; i < beer.beers.length; i++) {
+		// 	this.patrons.forEach((patron) => {
+		// 		if (patron.x + patron.width > beer.beers[i].x) {
+		// 			console.log('hit!');
+		// 		}
+		// 	})
+		// }
+		if (beer.beers != [] &&
+			beer.beers.currentBar === patron.patrons.currentBar) {
+			console.log('same bar!');
+		}	
+	},
 }
 
 patron.makePatron();
@@ -211,9 +236,9 @@ patron.makePatron();
 bartender.makeBartender();
 
 // animation loop
-// let x = 0;
 function animate () {
-	// console.log(++x);
+	// patron.checkServed();
+	game.updateHUD();
 	patron.walk();
 	beer.slide();
 	game.drawAll();
@@ -221,6 +246,16 @@ function animate () {
 }
 
 animate ();
+
+// DOM Manip
+const lives = document.querySelector('#lives');
+lives.innerHTML = `Player Lives<br>${game.lives}`
+
+
+
+
+
+
 //	Event Listeners
 
 document.addEventListener('keypress', (e) => {
