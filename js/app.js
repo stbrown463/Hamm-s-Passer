@@ -68,6 +68,13 @@ const game = {
 	eraseBoard() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height)
 	},
+	drawAll() {
+		this.eraseBoard();
+		this.drawBoard();
+		bartender.draw();
+		patron.draw();
+		beer.draw();
+	}
 
 }
 
@@ -152,15 +159,11 @@ const beer = {
 	},
 	slide () {
 		for (let i = 0; i < this.beers.length; i++) {
-			game.eraseBoard();
-			game.drawBoard();
-			bartender.draw();
 			this.beers[i].x -= 3;
 			if (this.beers[i].x <= 0) {
 				this.beers.splice(i, 1);
 			}
 		}
-		this.draw();
 	},
 	// getY () {
 	// 	this.y = game.bars[bartender.currentBar].y - 25;
@@ -191,6 +194,14 @@ const patron = {
 		for (let i = 0; i < this.patrons.length; i++) {
 			this.patrons[i].draw();
 		}
+	},
+	walk () {
+		for (let i = 0; i < this.patrons.length; i++) {
+			this.patrons[i].x += 1;
+			if (this.patrons[i].x > bartender.x - bartender.width) {
+				this.patrons.splice(i, 1);
+			}
+		}
 	}
 }
 
@@ -203,7 +214,9 @@ bartender.makeBartender();
 // let x = 0;
 function animate () {
 	// console.log(++x);
+	patron.walk();
 	beer.slide();
+	game.drawAll();
 	window.requestAnimationFrame(animate);
 }
 
