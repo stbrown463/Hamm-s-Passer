@@ -158,16 +158,43 @@ const beer = {
 			this.beers[i].x -= 3;
 			if (this.beers[i].x <= 0) {
 				this.beers.splice(i, 1);
-
 			}
 		}
 		this.draw();
-	}
+	},
 	// getY () {
 	// 	this.y = game.bars[bartender.currentBar].y - 25;
 	// }
 }
 
+const patron = {
+	x: 0,
+	y: null,
+	currentBar: 0,
+	width: 20,
+	height: 75,
+	color: 'green',
+	patrons: [],
+	makePatron () {
+		this.currentBar();
+		const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color)	
+		// beer.draw();
+		this.patrons.push(patron);
+		this.draw();
+	},
+	currentBar () {
+		// random bar height
+		let idx = Math.floor(Math.random() * 3);
+		this.y = game.bars[idx].y - 25;
+	},
+	draw () {
+		for (let i = 0; i < this.patrons.length; i++) {
+			this.patrons[i].draw();
+		}
+	}
+}
+
+patron.makePatron();
 
 // bartender.getY();
 bartender.makeBartender();
