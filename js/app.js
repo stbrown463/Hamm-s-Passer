@@ -4,7 +4,7 @@ const canvas = document.getElementById('board');
 // console.log(canvas);
 
 const ctx = canvas.getContext('2d');
-console.log(ctx);
+// console.log(ctx);
 
 
 // make one bar
@@ -82,12 +82,14 @@ const bartender = {
 	color: 'black',
 	bartenderArray: [],
 	makeBartender () {
+		this.getY();
 		const bartender = new Rectangle (this.x, this.y, this.width, this.height, this.color)
 		bartender.draw();
 		this.bartenderArray.push(bartender);
 	},
 	getY () {
 		this.y = game.bars[this.currentBar].y - 25;
+		return this.y
 	},
 	setY () {
 		this.bartenderArray[0].y = this.y
@@ -119,15 +121,33 @@ const bartender = {
 	},
 	run (dir) {
 		console.log("I'm running");
+	},
+	pourBeer () {
+		console.log("I'm pouring beer");
 	}
 }
 
-// bartender.makeBartender();
+const beer = {
+	x: 640,
+	y: null,
+	currentBar: 0,
+	width: 10,
+	height: 25,
+	color: 'blue',
+	beers: [],
+	makeBeer () {
+		this.y = bartender.getY();
+		const beer = new Rectangle (this.x, this.y, this.width, this.height, this.color)	
+		beer.draw();
+		this.beers.push(beer);
+	}
+	// getY () {
+	// 	this.y = game.bars[bartender.currentBar].y - 25;
+	// }
+}
 
-// console.log(bartender.y);
-// console.log(board.bars[bartender.currentBar].y);
 
-bartender.getY();
+// bartender.getY();
 bartender.makeBartender();
 
 
@@ -144,6 +164,10 @@ document.addEventListener('keypress', (e) => {
 document.addEventListener('keydown', (e) => {
 	if (["a", "d"].includes(e.key)) {
 		bartender.run(e.key)
+	}
+	if ("Space" === e.code) {
+		bartender.pourBeer();
+		beer.makeBeer()
 	}
 })
 
