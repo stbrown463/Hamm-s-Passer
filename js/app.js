@@ -44,9 +44,10 @@ class Rectangle {
 const game = {
 	numBars: 3,
 	bars: [],
+	taps: [],
 	makeBars () {
 		for (let i = 0; i < this.numBars; i++) {
-			const bar = new Rectangle (0, 100 + (i * (700 / this.numBars)), 600, 50, 'brown')
+			const bar = new Rectangle (0, 100 + (i * (700 / this.numBars)), 650, 50, 'brown')
 			bar.draw()
 			this.bars.push(bar);
 		}
@@ -55,8 +56,17 @@ const game = {
 		for (let i = 0; i < this.numBars; i++) {
 			const bar = new Rectangle (770, 100 + (i * (700 / this.numBars)), 30, 50, 'brown')
 			bar.draw();
-			this.bars.push(bar);
+			this.taps.push(bar);
 		}
+	},
+	drawBoard() {
+		for (let i = 0; i < this.bars.length; i++) {
+			this.bars[i].draw();
+			this.taps[i].draw();
+		}
+	},
+	eraseBoard() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height)
 	}
 }
 
@@ -66,7 +76,7 @@ game.makeTaps();
 const bartender = {
 	x: 740,
 	y: null,
-	currentBar: 2,
+	currentBar: 0,
 	width: 20,
 	height: 75,
 	color: 'black',
@@ -79,8 +89,36 @@ const bartender = {
 	getY () {
 		this.y = game.bars[this.currentBar].y - 25;
 	},
-	updatePosition () {
+	setY () {
+		this.bartenderArray[0].y = this.y
+	},
+	draw () {
+		this.bartenderArray[0].draw();
+	},
+	changeBar (dir) {
 		
+		if (dir === "w" && this.currentBar != 0) {
+			game.eraseBoard();
+			this.currentBar--
+			this.getY()
+			this.setY()
+			game.drawBoard();
+			this.draw();
+		}
+		if (dir === "s" && this.currentBar != game.numBars - 1) {
+			game.eraseBoard();
+			this.currentBar++
+			this.getY()
+			this.setY()
+			this.draw()
+			game.drawBoard()
+			this.draw();
+			
+		}
+		// this.bartenderArray[0].draw();
+	},
+	run (dir) {
+		console.log("I'm running");
 	}
 }
 
@@ -95,7 +133,19 @@ bartender.makeBartender();
 
 
 
-//
+//	Event Listeners
+
+document.addEventListener('keypress', (e) => {
+	if (["w", "s"].includes(e.key)) {
+		bartender.changeBar(e.key)
+	}
+})
+
+document.addEventListener('keydown', (e) => {
+	if (["a", "d"].includes(e.key)) {
+		bartender.run(e.key)
+	}
+})
 
 
 
