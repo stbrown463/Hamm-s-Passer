@@ -100,7 +100,7 @@ const game = {
 			this.animToggle = false;
 			// this.eraseBoard();
 			const div = document.createElement('div');
-			div.id = 'h1-container';
+			div.id = 'message-container';
 			const deathText = document.createElement('h1');
 			deathText.innerText = 'YOU DIED';
 			div.appendChild(deathText)
@@ -112,6 +112,32 @@ const game = {
 			// document.body.appendChild(deathText);
 			// this.eraseBoard()
 		}
+	},
+	reset () {
+		const messageContainer = document.getElementById('message-container');
+		// console.log(messageContainer);
+		canvas.parentNode.removeChild(messageContainer);
+		this.eraseBoard();
+		this.currentLevel = 1;
+		this.lives = 3;
+		this.score = 0;
+		this.numBars = 4;
+		this.randomBar = null;
+		this.bars = [];
+		this.taps = [];
+		this.patrons = [];
+		this.beers = [];
+		this.bartender = [];
+		this.patronRate = 1000;
+		this.patronsThisLevel = 5;
+
+		this.makeBars()
+		this.makeTaps()
+		patron.makePatron();
+		this.startTimer();
+		bartender.makeBartender();
+		this.animToggle = true;
+		animate();
 	},
 
 }
@@ -163,8 +189,7 @@ const bartender = {
 			this.draw()
 			game.drawBoard()
 			this.draw();
-			beer.draw();
-			
+			beer.draw();			
 		}
 	},
 	run (dir) {
@@ -346,13 +371,13 @@ document.addEventListener('keydown', (e) => {
 	}
 })
 
-let resetButton = document.getElementById('#reset');
-console.log(resetButton);
+
 document.addEventListener('click', (e) => {
-	console.log(e.target);
-	console.log(resetButton);
-	if (e.target === resetButton) {
-		console.log('click');
+	// console.log(e.target.id);
+	// console.log(resetButton);
+	if (e.target.id === 'reset') {
+		// console.log('click');
+		game.reset();
 	}
 })
 
