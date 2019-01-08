@@ -23,12 +23,16 @@ class Rectangle {
 }
 
 const game = {
-	animationHandle: null,
-	currentLevel: 1,
+	// animationHandle: null,
+	// currentLevel: 1,
+	currentPlayer: 1,
+	hadTurnP1: false,
+	hadTurnP2: false,
 	lives: 3,
-	score: 0,
+	score1: 0,
+	score2: 0,
 	numBars: 4,
-	randomBar: null,
+	// randomBar: null,
 	bars: [],
 	taps: [],
 	patrons: [],
@@ -36,8 +40,9 @@ const game = {
 	beers: [],
 	beersToDelete:[],
 	bartender: [],
-	patronRate: 1000,
+	patronRate: 2000,
 	patronsThisLevel: 5,
+	patronCounter: 0,
 	animToggle: true,
 	makeBars () {
 		for (let i = 0; i < this.numBars; i++) {
@@ -71,9 +76,11 @@ const game = {
 	},
 	updateHUD () {
 		const lives = document.querySelector('#lives');
-		lives.innerHTML = `Player Lives<br>${game.lives}`;
-		const score = document.querySelector('#score');
-		score.innerHTML = `Player Score<br>${game.score}`;
+		lives.innerHTML = `Player Lives<br>${this.lives}`;
+		const p1Score = document.querySelector('#p1-score');
+		p1Score.innerHTML = `Player 1 Score<br>${this.score1}`;
+		const p2Score = document.querySelector('#p2-score');
+		p2Score.innerHTML = `Player 2 Score<br>${this.score2}`;
 	},
 	startTimer () {
 		this.timer = setInterval(() => {
@@ -85,32 +92,54 @@ const game = {
 		clearInterval(this.timer);
 	},
 	leverUp () {
-		// if (this.currentLevel === 2) {
-
-		// }
+		
 	},
 	stopMakingPatrons () {
-		if (game.patronsThisLevel === patron.counter) {
+		if (game.patronsThisLevel === game.patronCounter) {
 			this.stopTimer();
+			return true
 			// console.log('no more patrons');
 		}
 	},
 	checkGameOver() {
 		if (this.lives <= 0) {
+			this.changePlayer()
 			this.animToggle = false;
+			this.stopTimer();
 			// this.eraseBoard();
 			const div = document.createElement('div');
 			div.id = 'message-container';
+
 			const deathText = document.createElement('h1');
 			deathText.innerText = 'YOU DIED';
 			div.appendChild(deathText)
 			canvas.parentNode.appendChild(div);
+
+			if (this.hadTurnP1 && this.hadTurnP2) {
+				const winnerMessage = document.createElement('h1');
+				winnerMessage.id = 'winner-message'
+				if (this.score1 > this.score2 ){
+					winnerMessage.innerText = 'Player One Wins';
+				} else if (this.score1 < this.score2) {
+					winnerMessage.innerText = 'Player Two Wins';
+				} else if (this.score1 === this.score2) {
+					winnerMessage.innerText = 'Tie Game!'
+				}
+
+				div.appendChild(winnerMessage)
+				// canvas.parentNode.appendChild(div);
+			}
+
 			const resetButton = document.createElement('button');
-			resetButton.innerText = 'reset game'
+			resetButton.innerText = 'Reset Game'
 			resetButton.id = 'reset'
 			div.appendChild(resetButton);
-			// document.body.appendChild(deathText);
-			// this.eraseBoard()
+
+			const changePlayer = document.createElement('button');
+			changePlayer.innerText = 'Change Player';
+			changePlayer.id = 'change-player';
+			div.appendChild(changePlayer);
+			
 		}
 	},
 	reset () {
@@ -120,16 +149,17 @@ const game = {
 		this.eraseBoard();
 		this.currentLevel = 1;
 		this.lives = 3;
-		this.score = 0;
 		this.numBars = 4;
-		this.randomBar = null;
+		// this.randomBar = null;
 		this.bars = [];
 		this.taps = [];
 		this.patrons = [];
 		this.beers = [];
 		this.bartender = [];
-		this.patronRate = 1000;
-		this.patronsThisLevel = 5;
+		this.patronRate = 2000;
+		this.patronsThisLevel = 5;		
+		patron.speed = 1;
+		beer.speed = 5;
 
 		this.makeBars()
 		this.makeTaps()
@@ -139,7 +169,38 @@ const game = {
 		this.animToggle = true;
 		animate();
 	},
-
+	zeroScores () {
+		this.score1 = 0;
+		this.score2 = 0;
+		this.currentPlayer = 1;
+	},
+	changePlayer () {
+		if (this.currentPlayer === 1) {
+			this.hadTurnP1 = true;
+			this.hadTurnP2 = false;
+			this.currentPlayer = 2;
+		} else if (this.currentPlayer === 2) {
+			this.hadTurnP2 = true
+			this.currentPlayer = 1;
+		}
+	},
+	increaseDifficulty() {
+		if (this.patronCounter % 10 === 0) {
+			
+			patron.speed += 0.2;
+			beer.speed += 0.1;
+			console.log(patron.speed, 'current patron speed');
+			console.log(beer.speed, 'current beer speed');;
+			if (this.patronRate >= 1000) {
+				console.log('difficulty up');
+				this.stopTimer()
+				this.patronRate -= 200;
+				this.startTimer()
+				console.log();
+				console.log(this.patronRate, 'current patron rate');
+			}
+		}
+	}
 }
 
 game.makeBars();
@@ -153,7 +214,6 @@ const bartender = {
 	width: 20,
 	height: 75,
 	color: 'black',
-	// bartenderArray: [],
 	makeBartender () {
 		this.getY();
 		const bartender = new Rectangle (this.x, this.y, this.width, this.height, this.color)
@@ -175,22 +235,29 @@ const bartender = {
 		if (dir === "w" && this.currentBar != 0) {
 			game.eraseBoard();
 			this.currentBar--
-			this.getY()
-			this.setY()
-			game.drawBoard();
-			this.draw();
-			beer.draw();
+			this.setNewBar();
 		}
 		if (dir === "s" && this.currentBar != game.numBars - 1) {
 			game.eraseBoard();
 			this.currentBar++
-			this.getY()
-			this.setY()
-			this.draw()
-			game.drawBoard()
-			this.draw();
-			beer.draw();			
+			this.setNewBar();		
 		}
+		// if (dir === "w" && this.currentBar === 0) {
+		// 	this.currentBar = 4 
+		// 	this.setNewBar();
+		// }
+		// if (dir = "s" && this.currentBar === game.numBars - 1) {
+		// 	this.currentBar = 1;
+		// 	this.setNewBar();
+		// }w
+	},
+	setNewBar () {
+		this.getY()
+		this.setY()
+		this.draw()
+		game.drawBoard()
+		this.draw();
+		beer.draw();
 	},
 	run (dir) {
 		console.log("I'm running");
@@ -204,6 +271,7 @@ const beer = {
 	width: 10,
 	height: 25,
 	color: 'blue',
+	speed: 5,
 	makeBeer () {
 		this.y = this.getY();
 		const beer = new Rectangle (this.x, this.y, this.width, this.height, this.color)	
@@ -234,7 +302,7 @@ const beer = {
 	// },
 	slide () {
 		for (let i = 0; i < game.beers.length; i++) {
-			game.beers[i].x -= 5;
+			game.beers[i].x -= this.speed;
 			if (game.beers[i].x <= 0) {
 				game.beers.splice(i, 1);
 				game.lives--;
@@ -260,7 +328,8 @@ const patron = {
 		const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color)	
 		patron.currentBar = this.currentBar
 		game.patrons.push(patron);
-		this.counter++;
+		game.patronCounter++;
+		game.increaseDifficulty();
 		this.draw();
 		// console.log(this.currentBar);
 	},
@@ -279,22 +348,24 @@ const patron = {
 			}
 		}
 	},
-	checkServed () {//console.log("check");
-		// for (let i = 0; i < game.beers.length; i++) {
+	checkServed () {
 		game.beers.forEach((beer, i) =>	{
 			game.patrons.forEach((patron, j) => {
 				if (patron.currentBar === beer.currentBar &&
-					patron.x + patron.width > game.beers[i].x) {
-					// game.beers.splice(i, 1);
-					// game.patrons.splice(j, 1);  // will have to change this when there are more patrons
-					game.score += 50;
-					// return
+					patron.x + patron.width > game.beers[i].x) {	
+					if (game.currentPlayer === 1) {
+						game.score1 += 50;
+					}
+					if (game.currentPlayer === 2) {
+						game.score2 += 50;
+					}
+					
 					game.beersToDelete.push(i);
 					game.patronsToDelete.push(j);
 					// console.log(Array.from(game.beersToDelete));
 					// console.log(Array.from(game.patronsToDelete));
 					//build list of indexes to delete
-					console.log("score");
+					// console.log("score");
 				}
 			})
 		})
@@ -327,7 +398,7 @@ function animate () {
 		game.stopTimer();
 		return
 	}
-	game.stopMakingPatrons();
+	// game.stopMakingPatrons();
 	patron.checkServed();
 	game.updateHUD();
 	patron.walk();
@@ -362,8 +433,8 @@ document.addEventListener('keypress', (e) => {
 document.addEventListener('keydown', (e) => {
 	if (["a", "d"].includes(e.key)) {
 		bartender.run(e.key)
-		console.log(game.beersToDelete, 'beers to delete');
-		console.log(game.patronsToDelete, 'patrons to delete');
+		// console.log(game.beersToDelete, 'beers to delete');
+		// console.log(game.patronsToDelete, 'patrons to delete');
 	}
 	if ("Space" === e.code) {
 		// beer.setTimer();
@@ -377,7 +448,14 @@ document.addEventListener('click', (e) => {
 	// console.log(resetButton);
 	if (e.target.id === 'reset') {
 		// console.log('click');
+		game.zeroScores();
 		game.reset();
+
+	}
+	if (e.target.id === 'change-player') {
+		// game.changePlayer();
+		game.reset();
+
 	}
 })
 

@@ -1,5 +1,8 @@
 body {
 	background-color: lightblue;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
 }
 
 #ui-row {
@@ -18,6 +21,11 @@ canvas {
 	align-items: center;*/
 }
 
+#title {
+	height: 100px;
+	width: 100px;
+}
+
 div {
 	text-align: center;
 }
@@ -28,6 +36,7 @@ div {
 	/*background-color: orange;*/
 	position: relative;
 }
+
 #board-container div {
 	/*background-color: green;*/
 	position: absolute;
@@ -39,6 +48,10 @@ div {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+}
+
+#message-container {
+	/*background-color: green;*/
 }
 h1 {
 	/*height: 200px;
