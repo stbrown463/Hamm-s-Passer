@@ -23,6 +23,7 @@ class Rectangle {
 }
 
 const game = {
+	animationHandle: null,
 	lives: 3,
 	score: 0,
 	numBars: 4,
@@ -74,8 +75,11 @@ const game = {
 		this.timer = setInterval(() => {
 			patron.makePatron();
 
-		}, 2000);
+		}, 1000);
 	},
+	stopTimer() {
+		clearInterval(this.timer);
+	}
 }
 
 game.makeBars();
@@ -159,6 +163,9 @@ const beer = {
 			game.beers[i].draw();
 		}
 	},
+	pour () {
+		// this.pourTimer = se
+	}
 	slide () {
 		for (let i = 0; i < game.beers.length; i++) {
 			game.beers[i].x -= 5;
@@ -208,23 +215,37 @@ const patron = {
 			}
 		}
 	},
-	checkServed () {
+	checkServed () {//console.log("check");
 		// for (let i = 0; i < game.beers.length; i++) {
 		game.beers.forEach((beer, i) =>	{
 			game.patrons.forEach((patron, j) => {
 				if (patron.currentBar === beer.currentBar &&
 					patron.x + patron.width > game.beers[i].x) {
-					game.beers.splice(i, 1);
-					game.patrons.splice(j, 1);  // will have to change this when there are more patrons
+					// game.beers.splice(i, 1);
+					// game.patrons.splice(j, 1);  // will have to change this when there are more patrons
 					game.score += 50;
-					return
-					// game.beersToDelete.push(i);
-					// game.patronsToDelete.push(j);
-
+					// return
+					game.beersToDelete.push(i);
+					game.patronsToDelete.push(j);
+					// console.log(Array.from(game.beersToDelete));
+					// console.log(Array.from(game.patronsToDelete));
 					//build list of indexes to delete
+					console.log("score");
 				}
 			})
 		})
+		// delete down here
+		// get the index of the 
+		// console.log(Array.from(game.beersToDelete));
+		// console.log(Array.from(game.patronsToDelete));
+		for (let i = 0; i < game.beersToDelete.length; i++) {
+			game.beers.splice(game.beersToDelete[i], 1);
+			game.beersToDelete.splice(i, 1);
+		}
+		for (let i = 0; i < game.patronsToDelete.length; i++) {
+			game.patrons.splice(game.patronsToDelete[i], 1);
+			game.patronsToDelete.splice(i, 1);
+		}
 	},
 }
 
@@ -258,6 +279,12 @@ document.addEventListener('keypress', (e) => {
 	if (["w", "s"].includes(e.key)) {
 		bartender.changeBar(e.key)
 	}
+	if ("1" === e.key) {
+		game.startTimer();
+	}
+	if ("2" === e.key) {
+		game.stopTimer();
+	}
 })
 
 document.addEventListener('keydown', (e) => {
@@ -271,6 +298,7 @@ document.addEventListener('keydown', (e) => {
 		beer.makeBeer()
 	}
 })
+
 
 
 
