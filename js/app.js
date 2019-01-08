@@ -24,6 +24,7 @@ class Rectangle {
 
 const game = {
 	animationHandle: null,
+	currentLevel: 1,
 	lives: 3,
 	score: 0,
 	numBars: 4,
@@ -35,6 +36,9 @@ const game = {
 	beers: [],
 	beersToDelete:[],
 	bartender: [],
+	patronRate: 1000,
+	patronsThisLevel: 5,
+	animToggle: true,
 	makeBars () {
 		for (let i = 0; i < this.numBars; i++) {
 			const bar = new Rectangle (0, 100 + (i * (700 / this.numBars)), 700, 50, 'brown')
@@ -75,11 +79,41 @@ const game = {
 		this.timer = setInterval(() => {
 			patron.makePatron();
 
-		}, 1000);
+		}, this.patronRate);
 	},
 	stopTimer() {
 		clearInterval(this.timer);
-	}
+	},
+	leverUp () {
+		// if (this.currentLevel === 2) {
+
+		// }
+	},
+	stopMakingPatrons () {
+		if (game.patronsThisLevel === patron.counter) {
+			this.stopTimer();
+			// console.log('no more patrons');
+		}
+	},
+	checkGameOver() {
+		if (this.lives <= 0) {
+			this.animToggle = false;
+			// this.eraseBoard();
+			const div = document.createElement('div');
+			div.id = 'h1-container';
+			const deathText = document.createElement('h1');
+			deathText.innerText = 'YOU DIED';
+			div.appendChild(deathText)
+			canvas.parentNode.appendChild(div);
+			const resetButton = document.createElement('button');
+			resetButton.innerText = 'reset game'
+			resetButton.id = 'reset'
+			div.appendChild(resetButton);
+			// document.body.appendChild(deathText);
+			// this.eraseBoard()
+		}
+	},
+
 }
 
 game.makeBars();
@@ -148,7 +182,6 @@ const beer = {
 	makeBeer () {
 		this.y = this.getY();
 		const beer = new Rectangle (this.x, this.y, this.width, this.height, this.color)	
-		// beer.draw();
 		beer.currentBar = this.currentBar
 		game.beers.push(beer);
 		this.draw();
@@ -163,9 +196,17 @@ const beer = {
 			game.beers[i].draw();
 		}
 	},
-	pour () {
-		// this.pourTimer = se
-	}
+	// setTimer () {
+	// 	this.timer = setInterval(() => {
+	
+	// 	}, 2000)
+	// },
+	// checkTimer () {
+	// 	if (this.timer === 1) {
+	// 		this.makeBeer();
+	// 		clearInterval(this.timer);
+	// 	}
+	// },
 	slide () {
 		for (let i = 0; i < game.beers.length; i++) {
 			game.beers[i].x -= 5;
@@ -185,6 +226,8 @@ const patron = {
 	width: 20,
 	height: 75,
 	color: 'green',
+	speed: 1,
+	counter: 0,
 	makePatron () {
 		// this.currentBar();
 		this.currentBar = Math.floor(Math.random() * game.numBars);
@@ -192,14 +235,10 @@ const patron = {
 		const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color)	
 		patron.currentBar = this.currentBar
 		game.patrons.push(patron);
+		this.counter++;
 		this.draw();
 		// console.log(this.currentBar);
 	},
-	// currentBar () {
-	// 	// random bar height
-	// 	this.currentBar = Math.floor(Math.random() * 3);
-	// 	this.y = game.bars[this.currentBar].y - 25;
-	// },
 	draw () {
 		for (let i = 0; i < game.patrons.length; i++) {
 			game.patrons[i].draw();
@@ -207,7 +246,7 @@ const patron = {
 	},
 	walk () {
 		for (let i = 0; i < game.patrons.length; i++) {
-			game.patrons[i].x += 1;
+			game.patrons[i].x += this.speed;
 			if (game.patrons[i].x > bartender.x - bartender.width) {
 				game.patrons.splice(i, 1);
 				game.lives--;
@@ -257,11 +296,19 @@ game.startTimer();
 
 // animation loop
 function animate () {
+	// beer.checkTimer();
+	if (!game.animToggle) {
+		game.updateHUD();
+		game.stopTimer();
+		return
+	}
+	game.stopMakingPatrons();
 	patron.checkServed();
 	game.updateHUD();
 	patron.walk();
 	beer.slide();
 	game.drawAll();
+	game.checkGameOver();
 	window.requestAnimationFrame(animate);
 }
 
@@ -294,11 +341,20 @@ document.addEventListener('keydown', (e) => {
 		console.log(game.patronsToDelete, 'patrons to delete');
 	}
 	if ("Space" === e.code) {
-		// bartender.pourBeer();
+		// beer.setTimer();
 		beer.makeBeer()
 	}
 })
 
+let resetButton = document.getElementById('#reset');
+console.log(resetButton);
+document.addEventListener('click', (e) => {
+	console.log(e.target);
+	console.log(resetButton);
+	if (e.target === resetButton) {
+		console.log('click');
+	}
+})
 
 
 
