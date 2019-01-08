@@ -81,6 +81,8 @@ const game = {
 		p1Score.innerHTML = `Player 1 Score<br>${this.score1}`;
 		const p2Score = document.querySelector('#p2-score');
 		p2Score.innerHTML = `Player 2 Score<br>${this.score2}`;
+		const currentPlayer = document.querySelector('#current-player');
+		currentPlayer.innerHTML = `Current Player<br>${this.currentPlayer}`;
 	},
 	startTimer () {
 		this.timer = setInterval(() => {
@@ -119,9 +121,9 @@ const game = {
 				const winnerMessage = document.createElement('h1');
 				winnerMessage.id = 'winner-message'
 				if (this.score1 > this.score2 ){
-					winnerMessage.innerText = 'Player One Wins';
+					winnerMessage.innerText = 'Player One Wins!';
 				} else if (this.score1 < this.score2) {
-					winnerMessage.innerText = 'Player Two Wins';
+					winnerMessage.innerText = 'Player Two Wins!';
 				} else if (this.score1 === this.score2) {
 					winnerMessage.innerText = 'Tie Game!'
 				}
