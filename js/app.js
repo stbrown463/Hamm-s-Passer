@@ -47,6 +47,20 @@ class Rectangle {
 			//trying to make can work
 			ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
 		}
+		if (this.type === 'fridge') {
+			// ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+			// sx = 150, swidth =150, sy = 0, sheight = 300 roughly
+			ctx.drawImage(this.img, 155, 5, 140, 285, this.x, this.y, this.width, this.height)
+		}
+		if (this.type === 'bartender') {
+			ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+		}
+		if (this.type === 'patron') {
+			ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+		}
+		if (this.type === 'bar') {
+			ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+		}
 	}
 }
 
@@ -74,16 +88,29 @@ const game = {
 	animToggle: true,
 	makeBars () {
 		for (let i = 0; i < this.numBars; i++) {
-			const bar = new Rectangle (0, 100 + (i * (700 / this.numBars)), 700, 50, 'brown', 'rect', null)
+			const img = new Image();
+			img.src = 'images/Woodgrain.jpg'	
+			
+			const bar = new Rectangle (0, 100 + (i * (700 / this.numBars)), 700, 50, 'brown', 'bar', img) // change type back to rect for rect
 			bar.draw()
 			this.bars.push(bar);
 		}
 	},
 	makeTaps() {
 		for (let i = 0; i < this.numBars; i++) {
-			const tap = new Rectangle (770, 100 + (i * (700 / this.numBars)), 30, 50, 'brown', 'rect', null)
-			tap.draw();
-			this.taps.push(tap);
+			const img = new Image();
+			img.src = 'images/fridges.jpg'
+			const fridge = new Rectangle (770, 60 + (i * (700 / this.numBars)), 28, 90, 'brown', 'fridge', img)  //changed height from 50. //changed y from + 100
+
+			fridge.draw();
+			this.taps.push(fridge);
+
+
+
+
+			// const tap = new Rectangle (770, 100 + (i * (700 / this.numBars)), 28, 50, 'brown', 'rect', null)  //changed 28 from 30
+			// tap.draw();
+			// this.taps.push(tap);
 		}
 	},
 	drawBoard() {
@@ -245,17 +272,28 @@ const bartender = {
 	x: 740,
 	y: null,
 	currentBar: 0,
-	width: 20,
-	height: 75,
+	width: 25,  //changed from 20
+	height: 90, //changed from 75
 	color: 'black',
 	makeBartender () {
 		this.getY();
-		const bartender = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'rect', null)
+		const img = new Image();
+		img.src = 'images/Hamms-Can-2016.jpg'	
+		const bartender = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'bartender', img)
 		bartender.draw();
 		game.bartender.push(bartender);
+
+
+
+
+
+		// this.getY();
+		// const bartender = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'rect', null)
+		// bartender.draw();
+		// game.bartender.push(bartender);
 	},
 	getY () {
-		this.y = game.bars[this.currentBar].y - 25;
+		this.y = game.bars[this.currentBar].y - 40;  //changed from -25
 		return this.y
 	},
 	setY () {
@@ -298,13 +336,6 @@ const bartender = {
 	},
 }
 
-// function drawCan () {
-	// const can = new Image();
-	// can.src = 'images/Hamms-Can-2016.jpg'
-	// can.onload = function() {
-	// 	ctx.drawImage(can, 0, 0);
-	// };
-// }
 
 const beer = {
 	x: 690,
@@ -316,7 +347,7 @@ const beer = {
 	speed: 5,
 	makeBeer () {
 
-		// working, but no collision detection
+		// working
 		this.y = this.getY();
 		const img = new Image();
 		img.src = 'images/Hamms-Can-2016.jpg'	
@@ -326,10 +357,8 @@ const beer = {
 
 		this.draw();
 
-
-
-
 		// rectangle that works
+
 		// this.y = this.getY();
 		// const beer = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'rect', null)	
 		// beer.currentBar = this.currentBar
@@ -373,16 +402,19 @@ const patron = {
 	x: 0,
 	y: null,
 	currentBar: 0,
-	width: 20,
-	height: 75,
+	width: 25,    //25 , 90. changed from 20, 75
+	height: 90,
 	color: 'green',
 	speed: 1,
 	counter: 0,
 	makePatron () {
-		// this.currentBar();
+		const img = new Image();
+		img.src = 'images/Hamms-Can-2016.jpg'	
+		
+
 		this.currentBar = Math.floor(Math.random() * game.numBars);
-		this.y = game.bars[this.currentBar].y - 25;
-		const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'rect', null)	
+		this.y = game.bars[this.currentBar].y - 40;  //40. changed from 25
+		const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'patron', img)	
 		patron.currentBar = this.currentBar
 		game.patrons.push(patron);
 		game.patronCounter++;
@@ -495,6 +527,7 @@ document.addEventListener('keydown', (e) => {
 	}
 	if ("Space" === e.code) {
 		// beer.setTimer();
+		e.preventDefault();
 		beer.makeBeer()
 	}
 })
