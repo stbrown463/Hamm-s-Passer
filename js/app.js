@@ -53,7 +53,7 @@ class Rectangle {
 			ctx.drawImage(this.img, 155, 5, 140, 285, this.x, this.y, this.width, this.height)
 		}
 		if (this.type === 'bartender') {
-			ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+			ctx.drawImage(this.img, 350, 60, 300, 975, this.x, this.y, this.width, this.height);
 		}
 		if (this.type === 'patron') {
 			ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -114,6 +114,7 @@ const game = {
 		}
 	},
 	drawBoard() {
+
 		for (let i = 0; i < this.bars.length; i++) {
 			this.bars[i].draw();
 			this.taps[i].draw();
@@ -278,7 +279,8 @@ const bartender = {
 	makeBartender () {
 		this.getY();
 		const img = new Image();
-		img.src = 'images/Hamms-Can-2016.jpg'	
+		// img.src = 'images/Hamms-Can-2016.jpg'	
+		img.src = 'images/waiter.png'	
 		const bartender = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'bartender', img)
 		bartender.draw();
 		game.bartender.push(bartender);
@@ -509,6 +511,9 @@ animate();
 
 document.addEventListener('keypress', (e) => {
 	if (["w", "s"].includes(e.key)) {
+		if (!game.animToggle) {
+			return
+		}
 		bartender.changeBar(e.key)
 	}
 	if ("1" === e.key) {
@@ -521,12 +526,18 @@ document.addEventListener('keypress', (e) => {
 
 document.addEventListener('keydown', (e) => {
 	if (["a", "d"].includes(e.key)) {
+		if (!game.animToggle) {
+			return
+		}
 		bartender.run(e.key)
 		// console.log(game.beersToDelete, 'beers to delete');
 		// console.log(game.patronsToDelete, 'patrons to delete');
 	}
 	if ("Space" === e.code) {
 		// beer.setTimer();
+		if (!game.animToggle) {
+			return
+		}
 		e.preventDefault();
 		beer.makeBeer()
 	}

@@ -1,7 +1,9 @@
 body {
-	background-color: lightblue;
-	/*background-image: url(../images/brick-wall.jpg);*/
-	background-repeat: no-repeat;
+	/*background-color: lightblue;
+*/	background-image: url(../images/brick-wall.jpg);
+	background-size: cover;
+	height: 100%;
+	overflow: hidden;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -10,19 +12,27 @@ body {
 
 #ui-row {
 	display: flex;
+	background-color: black;
 	justify-content: space-around;
+	align-items: center;
+	height: 60px;
 	width: 800px;
-	margin-bottom: 10px;
+	/*padding: 20px;*/
+	/*margin-bottom: 10px;*/
 }
 
 .ui-text{
-	
+	color: white;
+	font-size: 18px;
+	font-family: "helvetica", sans-serif;
+
+
 }
 
 canvas {
 	position: relative;
 	border: 1px solid black;
-	background-color: darkgrey;
+	background-color: rgb(74, 83, 96);
 	/*background-image: url(../images/bar-wall.jpg);*/
 	/*display: flex;
 	justify-content: center;
@@ -31,12 +41,17 @@ canvas {
 
 #title {
 	height: 100px;
-	/*width: 300px;*/
+	width: 620px;
 	font-size: 80px;
+	line-height: 100px;
 	font-weight: bold;
 	font-family: "helvetica", sans-serif;
 	text-align: center;
-	margin-bottom: 10px;
+	border-radius: 5px;
+	border: 3px solid white;
+	margin: 10px;
+	color: #E8B94F;
+	background-color: #00529C;
 }
 
 div {
@@ -69,7 +84,7 @@ div {
 }
 
 #winner-message {
-/*	margin-bottom: 10px;*/
+	margin-top: 10px;
 }
 
 h1 {
@@ -79,7 +94,7 @@ h1 {
 	/*top: 0px;*/
 	margin: 0;
 	color: black;
-	background-color: lightyellow;
+	background-color: #E8B94F;
 	padding: 10px;
 	font-size: 50px;
 	border-radius: 5px;
