@@ -59,12 +59,30 @@ div {
 #message-container {
 	/*background-color: green;*/
 }
+
+#winner-message {
+	margin-bottom: 10px;
+}
+
 h1 {
 	/*height: 200px;
 	width: 200px;*/
 	/*position: absolute;*/
 	/*top: 0px;*/
+	margin: 0;
+	color: lightyellow;
+	background-color: black;
+	padding: 10px;
+	font-size: 50px;
+}
+
+button {
+	height: 50px;
+	width: 100px;
+	background-color: gray;
 	color: black;
-	background-color: lightyellow;
+	border-radius: 5px;
+	margin-top: 5px;
+
 }
 

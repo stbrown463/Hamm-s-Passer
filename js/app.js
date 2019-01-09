@@ -131,6 +131,9 @@ const game = {
 				div.appendChild(winnerMessage)
 				// canvas.parentNode.appendChild(div);
 			}
+			// const buttonBox = document.createElement('div')
+			// buttonBox.id = 'button-box'
+			// canvas.parentNode.appendChild(buttonBox)
 
 			const resetButton = document.createElement('button');
 			resetButton.innerText = 'Reset Game'
