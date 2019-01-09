@@ -1,9 +1,14 @@
+@font-face {
+	font-family: "HammsFont";
+	src: url('../fonts/Aspire-DemiBold.ttf') format('truetype');
+}
+
 body {
 	/*background-color: lightblue;
 */	background-image: url(../images/brick-wall.jpg);
 	background-size: cover;
-	height: 100%;
-	overflow: hidden;
+	/*height: 100%;*/
+	/*overflow: hidden;*/
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -41,17 +46,21 @@ canvas {
 
 #title {
 	height: 100px;
-	width: 620px;
+	width: 550px;
 	font-size: 80px;
-	line-height: 100px;
+	/*line-height: 100px;*/
 	font-weight: bold;
 	font-family: "helvetica", sans-serif;
 	text-align: center;
-	border-radius: 5px;
-	border: 3px solid white;
+	border-radius: 10px;
+	border: 5px solid #00529C;
 	margin: 10px;
-	color: #E8B94F;
-	background-color: #00529C;
+	color: #D31F3C;
+	background-color: white;
+
+	/*color: #E8B94F;   blue and gold
+	background-color: #00529C;*/
+	font-family: 'Pinyon Script', cursive;
 }
 
 div {
@@ -83,8 +92,13 @@ div {
 	/*background-color: green;*/
 }
 
+#death-text {
+	color: #D31F3C;
+}
+
 #winner-message {
 	margin-top: 10px;
+	color: #E8B94F;
 }
 
 h1 {
@@ -93,24 +107,27 @@ h1 {
 	/*position: absolute;*/
 	/*top: 0px;*/
 	margin: 0;
-	color: black;
-	background-color: #E8B94F;
+	background-color: white;
 	padding: 10px;
 	font-size: 50px;
-	border-radius: 5px;
-	border: solid 1px black;
-
+	border-radius: 10px;
+	border: solid 2px black;
+	/*font-family: "HammsFont", truetype;*/
+	font-family: 'Pinyon Script', cursive;
+	text-align: center;
 }
 
 button {
 	height: 50px;
-	width: 100px;
-	background-color: lightgray;
-	color: black;
-	border-radius: 5px;
+	width: 150px;
+	background-color: #00529C;
+	color: white;
+	border-radius: 10px;
 	margin-top: 10px;
-	font-size: 16px;
-	border: 1px solid black;
+	font-size: 23px;
+	border: 4px solid black;
+	/*font-family: "HammsFont", truetype;*/
+	font-family: 'Pinyon Script', cursive;
 }
 
 #button-box {
@@ -119,7 +136,7 @@ button {
 	flex-direction: row;
 	justify-content: space-between;
 	/*background-color: blue;*/
-	width: 230px;
+	width: 320px;
 
 }
 

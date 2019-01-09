@@ -56,7 +56,7 @@ class Rectangle {
 			ctx.drawImage(this.img, 350, 60, 300, 975, this.x, this.y, this.width, this.height);
 		}
 		if (this.type === 'patron') {
-			ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+			ctx.drawImage(this.img, 250, 70, 400, 1100, this.x, this.y, this.width, this.height);
 		}
 		if (this.type === 'bar') {
 			ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -170,6 +170,7 @@ const game = {
 			canvas.parentNode.appendChild(div);
 
 			const deathText = document.createElement('h1');
+			deathText.id = 'death-text'
 			deathText.innerText = 'Round Over';
 			div.appendChild(deathText)
 
@@ -412,7 +413,7 @@ const patron = {
 	counter: 0,
 	makePatron () {
 		const img = new Image();
-		img.src = 'images/Hamms-Can-2016.jpg'	
+		img.src = 'images/punk-dude-transparent.png'	
 		
 
 		this.currentBar = Math.floor(Math.random() * game.numBars);
