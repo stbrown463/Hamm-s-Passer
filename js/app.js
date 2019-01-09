@@ -6,19 +6,47 @@ const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
 // console.log(ctx);
 
+
+// var can = new Image();
+// can.src = 'images/Hamms-Can-2016.jpg'
+// console.log(can);
+// // ctx.drawImage(can, 100, 100, 300, 571)
+// can.addEventListener('load', function () {
+// 	drawImage(can);
+// })
+
+// function drawCan () {
+// 	var can = new Image();
+// 	can.src = 'images/Hamms-Can-2016.jpg'
+// 	can.onload = function() {
+// 		ctx.drawImage(can, 0, 0);
+// 	};
+// }
+
+
+
+
 class Rectangle {
-	constructor (x, y, width, height, color) {
+	constructor (x, y, width, height, color, type, img) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.color = color;
+		this.type = type;
+		this.img = img;
 	}
 	draw () {
-		ctx.beginPath();
-		ctx.rect(this.x, this.y, this.width, this.height);
-		ctx.fillStyle = this.color;
-		ctx.fill();
+		if (this.type === 'rect') {
+			ctx.beginPath();
+			ctx.rect(this.x, this.y, this.width, this.height);
+			ctx.fillStyle = this.color;
+			ctx.fill();
+		} 
+		if (this.type === 'beer') {
+			//trying to make can work
+			ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+		}
 	}
 }
 
@@ -46,16 +74,16 @@ const game = {
 	animToggle: true,
 	makeBars () {
 		for (let i = 0; i < this.numBars; i++) {
-			const bar = new Rectangle (0, 100 + (i * (700 / this.numBars)), 700, 50, 'brown')
+			const bar = new Rectangle (0, 100 + (i * (700 / this.numBars)), 700, 50, 'brown', 'rect', null)
 			bar.draw()
 			this.bars.push(bar);
 		}
 	},
 	makeTaps() {
 		for (let i = 0; i < this.numBars; i++) {
-			const bar = new Rectangle (770, 100 + (i * (700 / this.numBars)), 30, 50, 'brown')
-			bar.draw();
-			this.taps.push(bar);
+			const tap = new Rectangle (770, 100 + (i * (700 / this.numBars)), 30, 50, 'brown', 'rect', null)
+			tap.draw();
+			this.taps.push(tap);
 		}
 	},
 	drawBoard() {
@@ -222,7 +250,7 @@ const bartender = {
 	color: 'black',
 	makeBartender () {
 		this.getY();
-		const bartender = new Rectangle (this.x, this.y, this.width, this.height, this.color)
+		const bartender = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'rect', null)
 		bartender.draw();
 		game.bartender.push(bartender);
 	},
@@ -270,20 +298,43 @@ const bartender = {
 	},
 }
 
+// function drawCan () {
+	// const can = new Image();
+	// can.src = 'images/Hamms-Can-2016.jpg'
+	// can.onload = function() {
+	// 	ctx.drawImage(can, 0, 0);
+	// };
+// }
+
 const beer = {
 	x: 690,
 	y: null,
 	currentBar: 0,
-	width: 10,
+	width: 15,
 	height: 25,
 	color: 'blue',
 	speed: 5,
 	makeBeer () {
+
+		// working, but no collision detection
 		this.y = this.getY();
-		const beer = new Rectangle (this.x, this.y, this.width, this.height, this.color)	
-		beer.currentBar = this.currentBar
-		game.beers.push(beer);
+		const img = new Image();
+		img.src = 'images/Hamms-Can-2016.jpg'	
+		const can = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'beer', img)
+		can.currentBar = this.currentBar
+		game.beers.push(can);
+
 		this.draw();
+
+
+
+
+		// rectangle that works
+		// this.y = this.getY();
+		// const beer = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'rect', null)	
+		// beer.currentBar = this.currentBar
+		// game.beers.push(beer);
+		// this.draw();
 	},
 	getY () {
 		this.y = game.bars[bartender.currentBar].y - 25;
@@ -331,7 +382,7 @@ const patron = {
 		// this.currentBar();
 		this.currentBar = Math.floor(Math.random() * game.numBars);
 		this.y = game.bars[this.currentBar].y - 25;
-		const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color)	
+		const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'rect', null)	
 		patron.currentBar = this.currentBar
 		game.patrons.push(patron);
 		game.patronCounter++;
