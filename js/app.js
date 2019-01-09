@@ -111,11 +111,11 @@ const game = {
 			// this.eraseBoard();
 			const div = document.createElement('div');
 			div.id = 'message-container';
+			canvas.parentNode.appendChild(div);
 
 			const deathText = document.createElement('h1');
-			deathText.innerText = 'YOU DIED';
+			deathText.innerText = 'Round Over';
 			div.appendChild(deathText)
-			canvas.parentNode.appendChild(div);
 
 			if (this.hadTurnP1 && this.hadTurnP2) {
 				const winnerMessage = document.createElement('h1');
@@ -131,19 +131,20 @@ const game = {
 				div.appendChild(winnerMessage)
 				// canvas.parentNode.appendChild(div);
 			}
-			// const buttonBox = document.createElement('div')
-			// buttonBox.id = 'button-box'
-			// canvas.parentNode.appendChild(buttonBox)
+			const buttonBox = document.createElement('div')
+			buttonBox.id = 'button-box'
+			div.appendChild(buttonBox)
+			
+			const changePlayer = document.createElement('button');
+			changePlayer.innerText = 'Change Player';
+			changePlayer.id = 'change-player';
+			buttonBox.appendChild(changePlayer);
 
 			const resetButton = document.createElement('button');
 			resetButton.innerText = 'Reset Game'
 			resetButton.id = 'reset'
-			div.appendChild(resetButton);
+			buttonBox.appendChild(resetButton);
 
-			const changePlayer = document.createElement('button');
-			changePlayer.innerText = 'Change Player';
-			changePlayer.id = 'change-player';
-			div.appendChild(changePlayer);
 			
 		}
 	},
