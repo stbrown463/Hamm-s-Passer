@@ -222,6 +222,7 @@ const game = {
 		this.patronsThisLevel = 5;		
 		patron.speed = 1;
 		beer.speed = 5;
+		bartender.currentBar = 0;
 
 		this.makeBars()
 		this.makeTaps()
