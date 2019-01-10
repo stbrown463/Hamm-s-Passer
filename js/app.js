@@ -86,6 +86,16 @@ const game = {
 	patronsThisLevel: 5,
 	patronCounter: 0,
 	animToggle: true,
+	init () {
+		const startScreen = document.getElementById('start-screen')
+		startScreen.parentNode.removeChild(startScreen);
+		this.makeBars();
+		this.makeTaps();
+		patron.makePatron();
+		bartender.makeBartender();
+		this.startTimer();
+		animate();
+	},
 	makeBars () {
 		for (let i = 0; i < this.numBars; i++) {
 			const img = new Image();
@@ -478,12 +488,12 @@ function animate () {
 
 
 // INIT GAME STUFF
-game.makeBars();
-game.makeTaps();
-patron.makePatron();
-bartender.makeBartender();
-game.startTimer();
-animate();
+// game.makeBars();
+// game.makeTaps();
+// patron.makePatron();
+// bartender.makeBartender();
+// game.startTimer();
+// animate();
 
 
 //	Event Listeners
@@ -537,7 +547,11 @@ document.addEventListener('click', (e) => {
 		game.reset();
 
 	}
+	if (e.target.id === 'start-button') {
+		game.init();
+	}
 })
+
 
 
 
