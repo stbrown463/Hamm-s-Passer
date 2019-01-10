@@ -211,6 +211,7 @@ const game = {
 		const messageContainer = document.getElementById('message-container');
 		canvas.parentNode.removeChild(messageContainer);
 		this.eraseBoard();
+		this.stopTimer();
 
 		//reset values
 		this.currentLevel = 1;
@@ -256,7 +257,7 @@ const game = {
 	increaseDifficulty() {
 		if (this.patronCounter % 10 === 0) {
 			
-			patron.speed += 0.2;
+			patron.speed += 0.4;
 			beer.speed += 0.1;
 			console.log('Difficulty increase!');
 			console.log(patron.speed, 'current patron speed');
