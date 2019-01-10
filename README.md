@@ -1,34 +1,43 @@
-Tapper User Stories :
+![Wireframe](images/tapper-wireframe.jpg "Wireframe")
 
-	Player can move from tap to tap with W + S keys
+What this is: 
+	
+	Hamm's Tosser is a game based on the classsic Bally Arcade cabinet, "Tapper"
+	The game runs using the HTML canvas element and animation frames
+	
+	The game can run in any web browser as long as it's big enough to hold the canvas element = 800px by 800px
+		the game can be run on other systems if the screen size can be altered
 
-	Player can pour beer by holding space bar --- o
 
-	Player slides beer down bar by releasing space bar. --- 
 
-	If patron is there to catch sliding beer, player gainst points -- Working
 
-	If no patron is there, player loses life. -- Working
 
-	If customer makes it to end of bar, player loses life.  -- Working
 
-	Chance of customer to throw back empty glass -- 
+	It is web browser based and should be able to run on any system assuming a screen size that fits the canvas the game runs in
 
-		If player catches empty glass, player gains points
 
-		If player doesn't catch empty glass, lose points
+Hamm's Tosser User Stories :
 
+	Start Screen loads for the player
+	User hits start and game begins
+
+	Player can move from bar to bar with W + S keys
+	
+	Player can serve beer by tapping space bar
+		If patron is there to catch sliding beer, player gains points
+		If no patron is there to catch beer, player loses life
+
+	If customer makes it to end of bar, player loses life
 
 Win conditions :
 
-	All patrons for level are served and player has more than 0 lives
+	Player 1 scores more points than Player 2 or vice versa
+	Both players have completed an equal number of rounds.
 
-	Show level passed message, click start button, 
+Features to add Later:
 
-Start new Level :
+	Draft beer - space bar keyup to pass beer after certain time of keydown
+	Different types of patrons - images, need multiple beers to be served, throw empties back to bartender
+	Retrieving Empties - patrons throw empty beers back to bartender that need to be retrieved
 
-	Update bar with higher patronCount, faster patrons, or more bars
 
-	Level 1 = 3 bars 20 patrons
-
-	Lavel 2 = 4

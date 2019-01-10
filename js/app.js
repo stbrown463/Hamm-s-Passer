@@ -49,6 +49,7 @@ class Rectangle {
 			ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
 		}
 		if (this.type === 'fridge') {
+			// notes on slicing image
 			// ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
 			// sx = 150, swidth =150, sy = 0, sheight = 300 roughly
 			ctx.drawImage(this.img, 155, 5, 140, 285, this.x, this.y, this.width, this.height)
@@ -115,7 +116,6 @@ const game = {
 			fridge.draw();
 			this.taps.push(fridge);
 
-
 			// makes taps as colored rectangles instead of img incase img fails
 
 			// const tap = new Rectangle (770, 100 + (i * (700 / this.numBars)), 28, 50, 'brown', 'rect', null)  //changed 28 from 30
@@ -170,7 +170,7 @@ const game = {
 			this.changePlayer()
 			this.animToggle = false;
 			this.stopTimer();
-			// this.eraseBoard();
+			
 			const div = document.createElement('div');
 			div.id = 'message-container';
 			canvas.parentNode.appendChild(div);
@@ -283,14 +283,11 @@ const bartender = {
 	color: 'black',
 	makeBartender () {
 		this.getY();
-		const img = new Image();
-		// img.src = 'images/Hamms-Can-2016.jpg'	
+		const img = new Image();	
 		img.src = 'images/waiter.png'	
 		const bartender = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'bartender', img)
 		bartender.draw();
 		game.bartender.push(bartender);
-
-
 
 		// makes colored rectangles instead of bartender
 
@@ -510,11 +507,9 @@ document.addEventListener('keydown', (e) => {
 				return
 			}
 			bartender.run(e.key)
-			// console.log(game.beersToDelete, 'beers to delete');
-			// console.log(game.patronsToDelete, 'patrons to delete');
+			// feature to be added later
 		}
 		if ("Space" === e.code) {
-			// beer.setTimer();
 			if (!game.animToggle) {
 				return
 			}
@@ -542,6 +537,11 @@ document.addEventListener('click', (e) => {
 	}
 })
 
+// feature to add later 
+// stop game timer that makes patrons when navigated away from the page
+// document.addEventListener('unload', (e) => {
+// 	console.log('page unloaded');
+// })
 
 
 
