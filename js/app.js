@@ -1,10 +1,7 @@
-console.log('Tapper!');
+console.log("Hamm's Passer!");
 
 const canvas = document.getElementById('board');
-// console.log(canvas);
-
 const ctx = canvas.getContext('2d');
-// console.log(ctx);
 
 // practice canvas stuff
 
@@ -23,9 +20,6 @@ const ctx = canvas.getContext('2d');
 // 		ctx.drawImage(can, 0, 0);
 // 	};
 // }
-
-
-
 
 class Rectangle {
 	constructor (x, y, width, height, color, type, img) {
@@ -49,10 +43,10 @@ class Rectangle {
 			ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
 		}
 		if (this.type === 'fridge') {
-			// notes on slicing image
+			// notes on slicing img 
 			// ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
 			// sx = 150, swidth =150, sy = 0, sheight = 300 roughly
-			ctx.drawImage(this.img, 155, 5, 140, 285, this.x, this.y, this.width, this.height)
+			ctx.drawImage(this.img, 160, 10, 135, 280, this.x, this.y, this.width, this.height) 
 		}
 		if (this.type === 'bartender') {
 			ctx.drawImage(this.img, 350, 60, 300, 975, this.x, this.y, this.width, this.height);
@@ -258,10 +252,10 @@ const game = {
 			
 			patron.speed += 0.2;
 			beer.speed += 0.1;
+			console.log('Difficulty increase!');
 			console.log(patron.speed, 'current patron speed');
 			console.log(beer.speed, 'current beer speed');;
 			if (this.patronRate >= 1000) {
-				console.log('difficulty up');
 				this.stopTimer()
 				this.patronRate -= 200;
 				this.startTimer()
@@ -397,16 +391,33 @@ const patron = {
 	makePatron () {
 		const img = new Image();
 		img.src = 'images/punk-dude-transparent.png'	
-		
+
+		// const img = this.randomPatron()
 
 		this.currentBar = Math.floor(Math.random() * game.numBars);
 		this.y = game.bars[this.currentBar].y - 40;  //40. changed from 25
-		const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'patron', img)	
+		const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'patron', img);
 		patron.currentBar = this.currentBar
 		game.patrons.push(patron);
 		game.patronCounter++;
 		game.increaseDifficulty();
 		this.draw();
+	},
+	// disabled for now 
+	randomPatron () {
+		const randIdx = Math.floor(Math.random() * 3);
+		console.log(randIdx);
+		const img = new Image()
+		if (randIdx === 0) {
+			img.src = 'images/punk-dude-transparent.png'
+		}
+		if (randIdx === 1) {
+			img.src = 'images/Hamms-Can-2016.jpg'
+		}
+		if (randIdx === 2) {
+			img.src = 'images/business-man.png'
+		}
+		return img		
 	},
 	draw () {
 		for (let i = 0; i < game.patrons.length; i++) {
@@ -525,12 +536,10 @@ document.addEventListener('click', (e) => {
 		// console.log('click');
 		game.zeroScores();
 		game.reset();
-
 	}
 	if (e.target.id === 'change-player') {
 		// game.changePlayer();
 		game.reset();
-
 	}
 	if (e.target.id === 'start-button') {
 		game.init();

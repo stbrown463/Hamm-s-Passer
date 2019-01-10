@@ -17,12 +17,13 @@ body {
 
 #ui-row {
 	display: flex;
-	background-color: black;
+	background-color: #E8B94F;
 	justify-content: space-around;
 	align-items: center;
 	height: 60px;
 	width: 800px;
 	border: 1px solid black;
+	border-bottom: 0;
 	/*padding: 20px;*/
 	/*margin-bottom: 10px;*/
 }
@@ -30,7 +31,8 @@ body {
 .ui-text{
 	color: white;
 	font-size: 18px;
-	font-family: "helvetica", sans-serif;
+	font-family: 'Raleway', sans-serif;
+	background-color: #E8B94F;
 
 
 }
@@ -107,12 +109,13 @@ h1 {
 	width: 200px;*/
 	/*position: absolute;*/
 	/*top: 0px;*/
+	border: solid 4px #00529C;
 	margin: 0;
 	background-color: white;
 	padding: 10px;
 	font-size: 50px;
 	border-radius: 10px;
-	border: solid 2px black;
+	
 	/*font-family: "HammsFont", truetype;*/
 	font-family: 'Pinyon Script', cursive;
 	text-align: center;
@@ -148,8 +151,9 @@ button {
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	height: 100%;
-	width: 100%;
+	height: 800px;
+	width: 800px;
+	border: 1px solid black;
 	display: flex;
 	justify-content: space-around;
 	align-items: space-around;
@@ -168,6 +172,18 @@ p {
 
 }
 
+footer {
+	max-height: 20px;
+	background-color: black;
+	opacity: 0.5;
+	width: 100%;
+	text-align: right;
+	color: white;
+	font-size: 20px;
+	font-family: 'Raleway', sans-serif;
+	position: absolute;
+	bottom: 0;
+}
 /*#start-image {
 	height: 50%;
 	width: 50%;
