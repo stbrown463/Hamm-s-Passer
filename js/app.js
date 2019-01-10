@@ -51,8 +51,14 @@ class Rectangle {
 		if (this.type === 'bartender') {
 			ctx.drawImage(this.img, 350, 60, 300, 975, this.x, this.y, this.width, this.height);
 		}
-		if (this.type === 'patron') {
+		if (this.type === 'punk') {
 			ctx.drawImage(this.img, 250, 70, 400, 1100, this.x, this.y, this.width, this.height);
+		}
+		if (this.type === 'woman') {
+			ctx.drawImage(this.img, 50, 50, 400, 550, this.x, this.y, this.width, this.height);
+		}
+		if (this.type === 'bman') {
+			ctx.drawImage(this.img, 500, 0, 450, 1456, this.x, this.y, this.width, this.height);
 		}
 		if (this.type === 'bar') {
 			ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -389,36 +395,34 @@ const patron = {
 	speed: 1,
 	counter: 0,
 	makePatron () {
-		const img = new Image();
-		img.src = 'images/punk-dude-transparent.png'	
-
-		// const img = this.randomPatron()
-
-		this.currentBar = Math.floor(Math.random() * game.numBars);
-		this.y = game.bars[this.currentBar].y - 40;  //40. changed from 25
-		const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'patron', img);
-		patron.currentBar = this.currentBar
-		game.patrons.push(patron);
-		game.patronCounter++;
-		game.increaseDifficulty();
-		this.draw();
-	},
-	// disabled for now 
-	randomPatron () {
 		// did this branching work ???
 		const randIdx = Math.floor(Math.random() * 3);
-		console.log(randIdx);
+		// console.log(randIdx);
 		const img = new Image()
+		this.currentBar = Math.floor(Math.random() * game.numBars);
+		this.y = game.bars[this.currentBar].y - 40;  //40. changed from 25
 		if (randIdx === 0) {
 			img.src = 'images/punk-dude-transparent.png'
+			const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'punk', img);
+			patron.currentBar = this.currentBar
+			game.patrons.push(patron);
 		}
 		if (randIdx === 1) {
-			img.src = 'images/Hamms-Can-2016.jpg'
+			img.src = 'images/woman.png'
+			const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'woman', img);
+			patron.currentBar = this.currentBar
+			game.patrons.push(patron);
 		}
 		if (randIdx === 2) {
 			img.src = 'images/business-man.png'
+			const patron = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'bman', img);
+			patron.currentBar = this.currentBar
+			game.patrons.push(patron);
 		}
-		return img		
+		// return img		
+		game.patronCounter++;
+		game.increaseDifficulty();
+		this.draw();
 	},
 	draw () {
 		for (let i = 0; i < game.patrons.length; i++) {
