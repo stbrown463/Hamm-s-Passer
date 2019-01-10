@@ -267,8 +267,6 @@ const game = {
 	}
 }
 
-game.makeBars();
-game.makeTaps();
 
 
 const bartender = {
@@ -297,43 +295,41 @@ const bartender = {
 		// game.bartender.push(bartender);
 	},
 	getY () {
+		// console.log(game.bars[this.currentBar].y);
+		// game.bartender[0].y = game.bars[this.currentBar].y -40;
 		this.y = game.bars[this.currentBar].y - 40;  //changed from -25
 		return this.y
+		// return game.bartender[0].y
 	},
-	setY () {
-		game.bartender[0].y = this.y
+	moveBartenderV () {
+		game.eraseBoard();
+		game.bartender[0].y = game.bars[this.currentBar].y - 40
+		game.drawBoard();
+		this.draw();
+		beer.draw();
 	},
 	draw () {
 		game.bartender[0].draw();
 	},
-	changeBar (dir) {
-		
-		if (dir === "w" && this.currentBar != 0) {
-			game.eraseBoard();
-			this.currentBar--
-			this.setNewBar();
+	changeBar (dir) {		
+		if (dir === "w") {
+			if (this.currentBar != 0) {
+				this.currentBar--
+			}
+			else {
+				this.currentBar = game.bars.length - 1;
+			}
 		}
-		if (dir === "s" && this.currentBar != game.numBars - 1) {
-			game.eraseBoard();
-			this.currentBar++
-			this.setNewBar();		
+		if (dir === "s") {
+			if (this.currentBar != game.bars.length - 1) {
+				this.currentBar++	
+			}
+			else {
+				this.currentBar = 0;		
+			}
 		}
-		// if (dir === "w" && this.currentBar === 0) {
-		// 	this.currentBar = 4 
-		// 	this.setNewBar();
-		// }
-		// if (dir = "s" && this.currentBar === game.numBars - 1) {
-		// 	this.currentBar = 1;
-		// 	this.setNewBar();
-		// }w
-	},
-	setNewBar () {
-		this.getY()
-		this.setY()
-		this.draw()
-		game.drawBoard()
-		this.draw();
-		beer.draw();
+		this.moveBartenderV()
+
 	},
 	run (dir) {
 		console.log("I'm running");
@@ -379,17 +375,6 @@ const beer = {
 			game.beers[i].draw();
 		}
 	},
-	// setTimer () {
-	// 	this.timer = setInterval(() => {
-	
-	// 	}, 2000)
-	// },
-	// checkTimer () {
-	// 	if (this.timer === 1) {
-	// 		this.makeBeer();
-	// 		clearInterval(this.timer);
-	// 	}
-	// },
 	slide () {
 		for (let i = 0; i < game.beers.length; i++) {
 			game.beers[i].x -= this.speed;
@@ -455,17 +440,11 @@ const patron = {
 					
 					game.beersToDelete.push(i);
 					game.patronsToDelete.push(j);
-					// console.log(Array.from(game.beersToDelete));
-					// console.log(Array.from(game.patronsToDelete));
-					//build list of indexes to delete
-					// console.log("score");
 				}
 			})
 		})
-		// delete down here
-		// get the index of the 
-		// console.log(Array.from(game.beersToDelete));
-		// console.log(Array.from(game.patronsToDelete));
+		// delete collision arrays down here
+	
 		for (let i = 0; i < game.beersToDelete.length; i++) {
 			game.beers.splice(game.beersToDelete[i], 1);
 			game.beersToDelete.splice(i, 1);
@@ -477,11 +456,6 @@ const patron = {
 	},
 }
 
-patron.makePatron();
-
-// bartender.getY();
-bartender.makeBartender();
-game.startTimer();
 
 // animation loop
 function animate () {
@@ -501,12 +475,15 @@ function animate () {
 	window.requestAnimationFrame(animate);
 }
 
+
+
+// INIT GAME STUFF
+game.makeBars();
+game.makeTaps();
+patron.makePatron();
+bartender.makeBartender();
+game.startTimer();
 animate();
-
-
-
-
-
 
 
 //	Event Listeners
