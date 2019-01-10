@@ -405,6 +405,7 @@ const patron = {
 	},
 	// disabled for now 
 	randomPatron () {
+		// did this branching work ???
 		const randIdx = Math.floor(Math.random() * 3);
 		console.log(randIdx);
 		const img = new Image()
