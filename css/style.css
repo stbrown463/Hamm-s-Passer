@@ -173,7 +173,7 @@ p {
 }
 
 footer {
-	max-height: 20px;
+	/*max-height: 20px;*/
 	background-color: black;
 	opacity: 0.5;
 	width: 100%;

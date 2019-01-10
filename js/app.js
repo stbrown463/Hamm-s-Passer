@@ -257,8 +257,8 @@ const game = {
 	increaseDifficulty() {
 		if (this.patronCounter % 10 === 0) {
 			
-			patron.speed += 0.4;
-			beer.speed += 0.1;
+			patron.speed += 0.3;
+			beer.speed += 0.2;
 			console.log('Difficulty increase!');
 			console.log(patron.speed, 'current patron speed');
 			console.log(beer.speed, 'current beer speed');;
