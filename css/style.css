@@ -121,14 +121,17 @@ h1 {
 button {
 	height: 50px;
 	width: 150px;
-	background-color: #00529C;
-	color: white;
 	border-radius: 10px;
 	margin-top: 10px;
-	font-size: 23px;
+	line-height: 50px;
 	border: 4px solid black;
-	/*font-family: "HammsFont", truetype;*/
 	font-family: 'Pinyon Script', cursive;
+}
+
+#message-container button {
+	font-size: 23px;
+	background-color: #00529C;
+	color: white;
 }
 
 #button-box {
@@ -141,10 +144,7 @@ button {
 }
 
 #start-screen {
-	background-color: white;
-	/*background-image: url(../images/Hamms-Can-2016.jpg);
-	background-repeat: no-repeat;
-	background-position: 25% 50%;*/
+	background-color: #00529C;
 	position: absolute;
 	top: 0px;
 	left: 0px;
@@ -152,6 +152,28 @@ button {
 	width: 100%;
 	display: flex;
 	justify-content: space-around;
-	align-items: center;
+	align-items: space-around;
 }
+
+#start-button {
+	color: #D31F3C;
+	font-size: 28px;
+}
+
+p {
+	text-align: center;
+	font-family: 'Pinyon Script', cursive;
+	font-size: 50px;
+	color: white;
+
+}
+
+/*#start-image {
+	height: 50%;
+	width: 50%;
+}*/
+
+
+
+
 

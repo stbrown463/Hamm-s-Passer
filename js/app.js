@@ -6,6 +6,7 @@ const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
 // console.log(ctx);
 
+// practice canvas stuff
 
 // var can = new Image();
 // can.src = 'images/Hamms-Can-2016.jpg'
@@ -65,8 +66,6 @@ class Rectangle {
 }
 
 const game = {
-	// animationHandle: null,
-	// currentLevel: 1,
 	currentPlayer: 1,
 	hadTurnP1: false,
 	hadTurnP2: false,
@@ -74,7 +73,6 @@ const game = {
 	score1: 0,
 	score2: 0,
 	numBars: 4,
-	// randomBar: null,
 	bars: [],
 	taps: [],
 	patrons: [],
@@ -86,9 +84,11 @@ const game = {
 	patronsThisLevel: 5,
 	patronCounter: 0,
 	animToggle: true,
+	running: false,
 	init () {
 		const startScreen = document.getElementById('start-screen')
 		startScreen.parentNode.removeChild(startScreen);
+		this.running = true;
 		this.makeBars();
 		this.makeTaps();
 		patron.makePatron();
@@ -116,7 +116,7 @@ const game = {
 			this.taps.push(fridge);
 
 
-
+			// makes taps as colored rectangles instead of img incase img fails
 
 			// const tap = new Rectangle (770, 100 + (i * (700 / this.numBars)), 28, 50, 'brown', 'rect', null)  //changed 28 from 30
 			// tap.draw();
@@ -159,14 +159,10 @@ const game = {
 	stopTimer() {
 		clearInterval(this.timer);
 	},
-	leverUp () {
-		
-	},
 	stopMakingPatrons () {
 		if (game.patronsThisLevel === game.patronCounter) {
 			this.stopTimer();
 			return true
-			// console.log('no more patrons');
 		}
 	},
 	checkGameOver() {
@@ -194,9 +190,7 @@ const game = {
 				} else if (this.score1 === this.score2) {
 					winnerMessage.innerText = 'Tie Game!'
 				}
-
 				div.appendChild(winnerMessage)
-				// canvas.parentNode.appendChild(div);
 			}
 			const buttonBox = document.createElement('div')
 			buttonBox.id = 'button-box'
@@ -210,20 +204,18 @@ const game = {
 			const resetButton = document.createElement('button');
 			resetButton.innerText = 'Reset Game'
 			resetButton.id = 'reset'
-			buttonBox.appendChild(resetButton);
-
-			
+			buttonBox.appendChild(resetButton);			
 		}
 	},
 	reset () {
 		const messageContainer = document.getElementById('message-container');
-		// console.log(messageContainer);
 		canvas.parentNode.removeChild(messageContainer);
 		this.eraseBoard();
+
+		//reset values
 		this.currentLevel = 1;
 		this.lives = 3;
 		this.numBars = 4;
-		// this.randomBar = null;
 		this.bars = [];
 		this.taps = [];
 		this.patrons = [];
@@ -235,11 +227,14 @@ const game = {
 		beer.speed = 5;
 		bartender.currentBar = 0;
 
+		// rebuild game to match reset values
 		this.makeBars()
 		this.makeTaps()
 		patron.makePatron();
-		this.startTimer();
 		bartender.makeBartender();
+
+		// enable movement
+		this.startTimer();
 		this.animToggle = true;
 		animate();
 	},
@@ -297,7 +292,7 @@ const bartender = {
 
 
 
-
+		// makes colored rectangles instead of bartender
 
 		// this.getY();
 		// const bartender = new Rectangle (this.x, this.y, this.width, this.height, this.color, 'rect', null)
@@ -305,11 +300,8 @@ const bartender = {
 		// game.bartender.push(bartender);
 	},
 	getY () {
-		// console.log(game.bars[this.currentBar].y);
-		// game.bartender[0].y = game.bars[this.currentBar].y -40;
 		this.y = game.bars[this.currentBar].y - 40;  //changed from -25
 		return this.y
-		// return game.bartender[0].y
 	},
 	moveBartenderV () {
 		game.eraseBoard();
@@ -343,6 +335,7 @@ const bartender = {
 	},
 	run (dir) {
 		console.log("I'm running");
+		// feature to be added later
 	},
 }
 
@@ -356,8 +349,6 @@ const beer = {
 	color: 'blue',
 	speed: 5,
 	makeBeer () {
-
-		// working
 		this.y = this.getY();
 		const img = new Image();
 		img.src = 'images/Hamms-Can-2016.jpg'	
@@ -419,7 +410,6 @@ const patron = {
 		game.patronCounter++;
 		game.increaseDifficulty();
 		this.draw();
-		// console.log(this.currentBar);
 	},
 	draw () {
 		for (let i = 0; i < game.patrons.length; i++) {
@@ -469,13 +459,11 @@ const patron = {
 
 // animation loop
 function animate () {
-	// beer.checkTimer();
 	if (!game.animToggle) {
 		game.updateHUD();
 		game.stopTimer();
 		return
 	}
-	// game.stopMakingPatrons();
 	patron.checkServed();
 	game.updateHUD();
 	patron.walk();
@@ -499,43 +487,45 @@ function animate () {
 //	Event Listeners
 
 document.addEventListener('keypress', (e) => {
-	if (["w", "s"].includes(e.key)) {
-		if (!game.animToggle) {
-			return
+	if (game.running) {
+		if (["w", "s"].includes(e.key)) {
+			if (!game.animToggle) {
+				return
+			}
+			bartender.changeBar(e.key)
 		}
-		bartender.changeBar(e.key)
-	}
-	if ("1" === e.key) {
-		game.startTimer();
-	}
-	if ("2" === e.key) {
-		game.stopTimer();
+		if ("1" === e.key) {
+			game.startTimer();
+		}
+		if ("2" === e.key) {
+			game.stopTimer();
+		}
 	}
 })
 
 document.addEventListener('keydown', (e) => {
-	if (["a", "d"].includes(e.key)) {
-		if (!game.animToggle) {
-			return
+	if (game.running) {	
+		if (["a", "d"].includes(e.key)) {
+			if (!game.animToggle) {
+				return
+			}
+			bartender.run(e.key)
+			// console.log(game.beersToDelete, 'beers to delete');
+			// console.log(game.patronsToDelete, 'patrons to delete');
 		}
-		bartender.run(e.key)
-		// console.log(game.beersToDelete, 'beers to delete');
-		// console.log(game.patronsToDelete, 'patrons to delete');
-	}
-	if ("Space" === e.code) {
-		// beer.setTimer();
-		if (!game.animToggle) {
-			return
+		if ("Space" === e.code) {
+			// beer.setTimer();
+			if (!game.animToggle) {
+				return
+			}
+			e.preventDefault();
+			beer.makeBeer()
 		}
-		e.preventDefault();
-		beer.makeBeer()
 	}
 })
 
 
 document.addEventListener('click', (e) => {
-	// console.log(e.target.id);
-	// console.log(resetButton);
 	if (e.target.id === 'reset') {
 		// console.log('click');
 		game.zeroScores();
