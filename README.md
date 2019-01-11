@@ -26,7 +26,7 @@ It can be run on other systems as well as long as the screen size can be changed
 Draft beer - space bar keyup to pass beer after certain time of keydown
 Different types of patrons - images, need multiple beers to be served, throw empties back to bartender
 
- *Partially implemented
+  *Partially implemented
 
 Retrieving Empties - patrons throw empty beers back to bartender that need to be retrieved
 
@@ -39,8 +39,8 @@ Player can move from bar to bar with W + S keys
 
 Player can serve beer by tapping space bar
 
- *If patron is there to catch sliding beer, player gains points
- *If no patron is there to catch beer, player loses life
+  *If patron is there to catch sliding beer, player gains points
+  *If no patron is there to catch beer, player loses life
 
 If customer makes it to end of bar, player loses life
 
